@@ -12,6 +12,14 @@ app.use(cors({
 
 app.use(express.json());
 
+// requests
+const signupRequest = require('./routes/signup');
+app.use('/signup', signupRequest);
+
+const loginRequest = require('./routes/login');
+app.use('/login', loginRequest);
+// requests
+
 connection.connect((err) => {
     if(err) {
         console.log(" DB Connection failed " + err);
