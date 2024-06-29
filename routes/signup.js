@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
     }
 
     //check if username is already registered
-    const query = "SELECT username FROM users WHERE username = ?;";
+    const query = "SELECT username FROM bdayUsers WHERE username = ?;";
     const values = [data.username];
 
     connection.query(query, values, async ( err, results) => {
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
         //hash the password
         const hashedPassword = await bcrypt.hash(data.username, 8);
         //insert user into database
-        const query1 = "INSERT INTO users (username, pwd) VALUES (?, ?);";
+        const query1 = "INSERT INTO bdayUsers (username, pwd) VALUES (?, ?);";
         const values1 = [data.username, hashedPassword];
 
             connection.query(query1, values1, (err) => {

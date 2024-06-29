@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
     const data = req.body;
     const message = {};
     
-    const query = "SELECT username, pwd FROM users WHERE username = ?;";
+    const query = "SELECT username, pwd FROM bdayUsers WHERE username = ?;";
     const values = [data.username];
 
     connection.query(query, values, async (err, result) => {
