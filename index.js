@@ -1,16 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const connection = require('./config');
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});
+
 
 const app = express();
 
 app.use(cors({
     origin: "*",
     methods: ["POST", "GET", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "accessToken"]
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+
+
 
 // requests
 const signupRequest = require('./routes/signup');
@@ -18,7 +24,12 @@ app.use('/signup', signupRequest);
 
 const loginRequest = require('./routes/login');
 app.use('/login', loginRequest);
+
+const accountRequest = require('./routes/account');
+app.use('/account', accountRequest);
 // requests
+
+
 
 connection.connect((err) => {
     if(err) {
