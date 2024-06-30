@@ -6,6 +6,7 @@ const { sign } = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
     const data = req.body;
+    console.log(data);
     const message = {};
     
     const query = "SELECT username, pwd FROM bdayUsers WHERE username = ?;";
@@ -22,12 +23,13 @@ router.post('/', (req, res) => {
             message.loginError = "incorrect username or password!";
             return res.json(message);
         }
-
+        console.log(result);
         const matchPassword = await bcrypt.compare(data.password, result[0].pwd, (err) => {
             if(err) {
                 console.log(err);
             }
         });
+        console.log(matchPassword);
         //check password correctness
         if(!matchPassword) {
             message.loginError = "incorrect username or password!";
