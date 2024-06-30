@@ -6,6 +6,7 @@ const { sign } = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
     const data = req.body;
+    console.log(data);
     const message = {};
     
     const query = "SELECT username, pwd FROM bdayUsers WHERE username = ?;";
