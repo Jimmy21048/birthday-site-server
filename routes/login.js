@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
             message.loginError = "incorrect username or password!";
             return res.json(message);
         }
-
+        console.log(result);
         const matchPassword = await bcrypt.compare(data.password, result[0].pwd);
         //check password correctness
         if(!matchPassword) {
