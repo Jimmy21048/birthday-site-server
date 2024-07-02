@@ -1,7 +1,7 @@
 const express = require('express');
 const connection = require('../config');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
