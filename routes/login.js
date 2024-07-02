@@ -1,7 +1,7 @@
 const express = require('express');
 const connection = require('../config');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
@@ -24,11 +24,7 @@ router.post('/', (req, res) => {
             return res.json(message);
         }
         console.log(result);
-        const matchPassword = await bcrypt.compare(data.password, result[0].pwd, (err) => {
-            if(err) {
-                console.log(err);
-            }
-        });
+        const matchPassword = await bcrypt.compare(data.password, result[0].pwd);
         console.log(matchPassword);
         //check password correctness
         if(!matchPassword) {
