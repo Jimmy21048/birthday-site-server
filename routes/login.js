@@ -24,13 +24,7 @@ router.post('/', (req, res) => {
             return res.json(message);
         }
         console.log(result);
-        const matchPassword = await bcrypt.compare(data.password, result[0].pwd, (err, result) => {
-            if(err) {
-                console.log(err);
-                return;
-            }
-            return result;
-        });
+        const matchPassword = await bcrypt.compare(data.password, result[0].pwd);
         console.log(matchPassword);
         //check password correctness
         if(!matchPassword) {
