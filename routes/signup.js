@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
         }
 
         //hash the password
-        const hashedPassword = await bcrypt.hash(data.username, 8);
+        const hashedPassword = await bcrypt.hash(data.username, 10);
         //insert user into database
         const query1 = "INSERT INTO bdayUsers (username, pwd) VALUES (?, ?);";
         const values1 = [data.username, hashedPassword];
