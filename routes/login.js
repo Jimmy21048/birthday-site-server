@@ -1,12 +1,11 @@
 const express = require('express');
 const connection = require('../config');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
     const data = req.body;
-    console.log(data);
     const message = {};
     
     const query = "SELECT username, pwd FROM bdayUsers WHERE username = ?;";
@@ -23,9 +22,9 @@ router.post('/', (req, res) => {
             message.loginError = "incorrect username or password!";
             return res.json(message);
         }
-        console.log(result);
-        const matchPassword = await bcrypt.compare(data.password, result[0].pwd);
-        console.log(matchPassword);
+
+        const matchPassword = await bcrypt.compare(data.username, result[0].pwd);
+
         //check password correctness
         if(!matchPassword) {
             message.loginError = "incorrect username or password!";
@@ -33,7 +32,7 @@ router.post('/', (req, res) => {
         }
 
         //generate access token
-        const accessToken = sign({username: result[0].username}, "myUserName", {expiresIn: 1800});
+        const accessToken = sign({username: result[0].username}, "myUserName", {expiresIn: 18000});
         message.loginSuccess = accessToken;
         return res.json(message);
     })

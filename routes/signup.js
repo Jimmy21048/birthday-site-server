@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const connection = require('../config');
 
 router.post('/', (req, res) => {
@@ -31,7 +31,6 @@ router.post('/', (req, res) => {
         }
 
         if(results.length > 0) {
-            console.log(results);
             signupMessage.userExists = "Username already exists";
             return sendResponse(signupMessage);
         }

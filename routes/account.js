@@ -65,13 +65,15 @@ router.post('/', validateToken, upload.single('recipientImage'), (req, res) => {
 
 router.get('/', validateToken, (req, res) => {
     const data = req.user;
-    const query = "SELECT username FROM users WHERE username = ?;";
+    console.log(data);
+    const query = "SELECT username FROM bdayUsers WHERE username = ?;";
     const values = [data];
     connection.query(query, values, (err, results) => {
         if(err) {
             console.log(err);
             return res.json({error: "Could not complete operation"});
         }
+        // console.log(results);
         if(results.length === 0) {
             console.log("User could not be found");
             return res.json({error: "Error fetching the results"});

@@ -3,6 +3,7 @@ const cors = require('cors');
 const connection = require('./config');
 const multer = require('multer');
 const upload = multer({dest: 'uploads/'});
+// const bcrypt = require('bcrypt');
 
 
 const app = express();
@@ -10,7 +11,7 @@ const app = express();
 app.use(cors({
     origin: "*",
     methods: ["POST", "GET", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "accessToken"]
+    allowedHeaders: ["Content-Type", "accessToken"]
 }));
 
 app.use(express.json());
