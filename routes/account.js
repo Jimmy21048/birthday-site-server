@@ -65,7 +65,7 @@ router.post('/', validateToken, upload.single('recipientImage'), (req, res) => {
 
 router.get('/', validateToken, (req, res) => {
     const data = req.user;
-    const query = "SELECT username FROM users WHERE username = ?;";
+    const query = "SELECT username FROM bdayUsers WHERE username = ?;";
     const values = [data];
     connection.query(query, values, (err, results) => {
         if(err) {
