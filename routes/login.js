@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
         }
 
         //generate access token
-        const accessToken = sign({username: result[0].username}, "myUserName", {expiresIn: 18000});
+        const accessToken = sign({username: result[0].username}, "myUserName", {expiresIn: 1800});
         message.loginSuccess = accessToken;
         return res.json(message);
     })

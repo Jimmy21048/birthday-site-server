@@ -28,6 +28,9 @@ app.use('/login', loginRequest);
 
 const accountRequest = require('./routes/account');
 app.use('/account', accountRequest);
+
+const sentRequest = require('./routes/sent');
+app.use('/sent', sentRequest);
 // requests
 
 

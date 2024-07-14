@@ -3,6 +3,7 @@ const connection = require('../config');
 const router = express.Router();
 const { validateToken } = require('../middleware/Auth');
 const path = require('path');
+
 require('dotenv').config();
 
 const multer = require('multer');
@@ -34,18 +35,21 @@ admin.initializeApp({
 router.post('/', validateToken, upload.single('recipientImage'), (req, res) => {
     
     const data = req.body;
+    console.log(data);
     const filePath = path.join(path.resolve(__dirname, '..'), req.file.path);
     const imagePath = `images/${req.file.originalname}`
 
+    const recipientId = data.recipientName + Date.now();
 
-    const query = "INSERT INTO recipients (r_name, date_of_birth, open_date, gifts, r_image, message, username) VALUES (?,?,?,?,?,?,?);";
-    const values = [data.recipientName, data.birthDate, data.openDate, data.enableGift, imagePath, data.bdayMessage, req.user];
+    const query = "INSERT INTO recipients (r_name, event_type, date_of_birth, open_date, r_image, message, username, recipientId) VALUES (?,?,?,?,?,?,?,?);";
+    const values = [data.recipientName, data.eventType, data.birthDate, data.openDate, imagePath, data.bdayMessage, req.user, recipientId];
     connection.query(query, values, async (err) => {
       if(err) {
         console.log(err);
         return res.json({error: "Could not complete operation"});
       }
-      console.log("success");
+
+      res.json({success: recipientId});
       try {
         await bucket.upload(filePath, {
           destination: `images/${req.file.originalname}`, // Path in Firebase Storage
@@ -54,11 +58,11 @@ router.post('/', validateToken, upload.single('recipientImage'), (req, res) => {
           }
         });
     
-        res.send('File uploaded to Firebase Storage successfully.');
       } catch (error) {
         console.error('Error uploading file:', error);
-        res.status(500).send('Error uploading file.');
-    }
+        // res.status(500).send('Error uploading file.');
+      }
+
     })
 })
 
@@ -67,12 +71,13 @@ router.get('/', validateToken, (req, res) => {
     const data = req.user;
     const query = "SELECT username FROM bdayUsers WHERE username = ?;";
     const values = [data];
+
     connection.query(query, values, (err, results) => {
         if(err) {
             console.log(err);
             return res.json({error: "Could not complete operation"});
         }
-        // console.log(results);
+        
         if(results.length === 0) {
             console.log("User could not be found");
             return res.json({error: "Error fetching the results"});
