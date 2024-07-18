@@ -23,4 +23,33 @@ router.post('/', (req, res) => {
     })
 })
 
+router.get('/my', validateToken, (req, res) => {
+    const user = req.user;
+    const query = "SELECT r_id, r_name, event_type, open_date FROM recipients WHERE username = ?;";
+    const values = [user];
+
+    connection.query(query, values, (err, results) => {
+        if(err) {
+            console.log(err);
+            return res.json("Could not fetch data");
+        }
+
+        return res.json(results);
+    })
+})
+
+router.post('/my', validateToken, (req, res) => {
+    const query = "DELETE FROM recipients WHERE r_id = ?;";
+    const values = [req.body.id];
+
+    connection.query(query, values, (err) => {
+        if(err) {
+            console.log(err);
+            return res.json("Could not delete Item");
+        }
+
+        return res.json({success: "delete success"});
+    })
+})
+
 module.exports = router;
