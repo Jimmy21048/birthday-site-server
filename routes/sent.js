@@ -38,20 +38,6 @@ router.get('/my', validateToken, (req, res) => {
     })
 })
 
-router.post('/my', validateToken, (req, res) => {
-    const query = "DELETE FROM recipients WHERE r_id = ?;";
-    const values = [req.body.id];
-
-    connection.query(query, values, (err) => {
-        if(err) {
-            console.log(err);
-            return res.json("Could not delete Item");
-        }
-
-        return res.json({success: "delete success"});
-    })
-})
-
 router.post('/feedback', (req, res) => {
     const data = req.body;
     const query = "UPDATE recipients SET r_response = ? WHERE r_id = ?;";
